@@ -11,7 +11,8 @@ Credits:
 		- Natalie Niklas
 		- Malte Schuler
 
-Currently falls under no license. This can be changed at any time.
+
+See COPYING for further license issues.
 
 Contact: Send an email to a Team Member.
  
