@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include "main.h"
 #include "field.h"
 
 int *field1 = NULL;
@@ -10,7 +9,7 @@ int counter = 0;
 int field_init(int size){
 	int i;
 
-	if((size < 13) || (size > 100)) return -1;
+	if((size < FIELD_MIN) || (size > FIELD_MAX)) return -1;
 	if((field1 != NULL) || (field2 != NULL)) return -2;
 
 	field1 = malloc(sizeof(int)*size*size);

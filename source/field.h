@@ -1,3 +1,6 @@
+#define FIELD_MAX 100
+#define FIELD_MIN 13
+
 /************************************************************************
  *                                                                      *
  * Die Funktion field_init erzeugt 2 Spielfelder. Die Spielfelder sind  *
