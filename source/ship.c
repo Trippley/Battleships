@@ -1,6 +1,7 @@
 #include "main.h"
 #include "ship.h"
 #include "field.h"
+#include <math.h>
 
 SHIP *ship_list = NULL;
 unsigned short ship_id = 10;					// Werte zwischen 0 und 9 sind für den Status reserviert
@@ -55,15 +56,26 @@ int ship_init(){
 	return 0;
 }
 
-char ship_direction(unsigned short ship_id){
+SHIP *ship_address(unsigned short ship_id){
 	SHIP *tmp_ship = ship_list;
-
+	
 	while(tmp_ship != NULL){
 		if(tmp_ship->ship_id == ship_id) {
-			return tmp_ship->direction;
+			return tmp_ship;
 		}
 		tmp_ship = tmp_ship->next;
 	}
+
+	return NULL;
+}
+
+char ship_direction(unsigned short ship_id){
+	SHIP *tmp_ship = NULL;
+
+	tmp_ship = ship_address(ship_id);
+
+	if(tmp_ship != NULL) return tmp_ship->direction;
+
 	return -1; 
 }
 
@@ -78,4 +90,54 @@ unsigned short ship_counter(){
 	return i;
 }
 
+int ship_set(unsigned short ship_id, unsigned short coordinate, char direction){
+	SHIP *tmp_ship = NULL;
+	SHIP_COORDINATES *tmp_coordinate = NULL;
+	int i;
+	
+	tmp_ship = ship_address(ship_id);
 
+	if(tmp_ship == NULL) return -1;			// Schiff existiert nicht
+	if((coordinate < 0) || (coordinate > (field_counter()-1))) return -2;		// Koordinate existiert nicht
+	if((direction != 'n') || (direction != 'e') || (direction != 's') || (direction != 'w')) return -3;		// übergebene Himmelsrichtung gibt es nicht
+	if(tmp_ship->active != 0) return -4;	//Schiff ist schon gesetzt
+
+	for(i=0; i<(tmp_ship->elements);i++) {
+		
+		if((direction == 'n') && ((coordinate-((tmp_ship->elements)-1)*sqrt(field_counter())) < 0)) return -5;					// Schiff geht über das Spielfeld hinaus
+		if((direction == 'e') && (((coordinate%(int)sqrt(field_counter())) + ((tmp_ship->elements)-1)) < sqrt(field_counter()))) return -5;
+		if((direction == 's') && ((coordinate+((tmp_ship->elements)-1)*sqrt(field_counter())) > field_counter())) return -5; 	// Schiff geht über das Spielfeld hinaus
+		if((direction == 'w') && (((coordinate%(int)sqrt(field_counter())) - ((tmp_ship->elements)-1)) < 0)) return -5;
+
+		if((direction == 'n') && (field_state(tmp_ship->owner, coordinate-i*sqrt(field_counter())) != 0)) return -6;		// Es ist schon ein Schiff drauf
+		if((direction == 'e') && (field_state(tmp_ship->owner, coordinate+i) != 0)) return -6; 							// Es ist schon ein Schiff drauf
+		if((direction == 's') && (field_state(tmp_ship->owner, coordinate+i*sqrt(field_counter())) != 0)) return -6;		// Es ist schon ein Schiff drauf
+		if((direction == 'w') && (field_state(tmp_ship->owner, coordinate-i) != 0)) return -6;							// Es ist schon ein Schiff drauf
+	}
+
+	for(i=0;i<(tmp_ship->elements);i++){
+
+		if(tmp_coordinate == NULL) {
+			tmp_coordinate = malloc(sizeof(SHIP_COORDINATES));
+			tmp_ship->coordinates = tmp_coordinate;
+		} else {
+			tmp_coordinate->next = malloc(sizeof(SHIP_COORDINATES));
+			tmp_coordinate = tmp_coordinate->next;
+		}
+
+		if(direction == 'n') {
+			field_set(tmp_ship->owner, coordinate-i*sqrt(field_counter()), ship_id);
+		
+			tmp_coordinate->coordinate = coordinate-i*sqrt(field_counter());
+		} else if(direction == 'e') {
+		} else if(direction == 's') {
+		} else if(direction == 'w') {
+		}
+
+		tmp_coordinate->state = 1;
+		tmp_coordinate->next = NULL;
+	}
+
+	tmp_ship->active = 1;
+	tmp_ship->direction = direction;
+}

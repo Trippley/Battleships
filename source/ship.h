@@ -1,10 +1,16 @@
+typedef struct _ship_coordinates{
+	unsigned short coordinate;
+	int state;
+	struct _ship_coordinates *next;
+} SHIP_COORDINATES;
+
 typedef struct _ship{
 	unsigned short ship_id;
 	unsigned short owner;
 	unsigned short active;
 	unsigned short elements;
 	char direction;
-	unsigned int *coordinates;
+	SHIP_COORDINATES *coordinates;
 	struct _ship *next;
 } SHIP;
 
@@ -48,3 +54,6 @@ char ship_direction(unsigned short ship_id);
  *                                                                      *
  ************************************************************************/
 unsigned short ship_counter();
+
+
+SHIP *ship_address(unsigned short ship_id);
