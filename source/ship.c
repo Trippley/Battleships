@@ -3,7 +3,7 @@
 #include "field.h"
 
 SHIP *ship_list = NULL;
-unsigned int ship_id = 0;
+unsigned short ship_id = 10;					// Werte zwischen 0 und 9 sind für den Status reserviert
 
 int ship_init(){
 	unsigned int fours = 0, threes = 0, twos = 0, ones = 0;
@@ -32,6 +32,7 @@ int ship_init(){
 
 		tmp_ship->ship_id = ++ship_id;
 		tmp_ship->active = 0;
+		tmp_ship->direction = 0;
 		tmp_ship->coordinates = NULL;
 		tmp_ship->next = NULL;
 
@@ -53,4 +54,28 @@ int ship_init(){
 
 	return 0;
 }
+
+char ship_direction(unsigned short ship_id){
+	SHIP *tmp_ship = ship_list;
+
+	while(tmp_ship != NULL){
+		if(tmp_ship->ship_id == ship_id) {
+			return tmp_ship->direction;
+		}
+		tmp_ship = tmp_ship->next;
+	}
+	return -1; 
+}
+
+unsigned short ship_counter(){
+	SHIP *tmp_ship = ship_list;
+	unsigned short i = 0;
+
+	while(tmp_ship != NULL){
+		tmp_ship = tmp_ship->next;
+		i++;
+	}
+	return i;
+}
+
 
