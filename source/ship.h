@@ -56,4 +56,26 @@ char ship_direction(unsigned short ship_id);
 unsigned short ship_counter();
 
 
+/************************************************************************
+ *                                                                      *
+ * Die Funktion ship_set dient zum Setzen der Schiffe. Übergabeparamter *
+ * sind die ship_id, die Anfangskoordinate und die Richtung.            *
+ * Mögliche Rückgabewerte sind:                                         *
+ *                                                                      *
+ *   0: Das Schiff wurde gesetzt.                                       *
+ *  -1: Das Schiff existiert nicht.                                     *
+ *  -2: Die angegebene Koordinate existiert nicht.                      *
+ *  -3: Die übergebene Richtung existiert nicht.                        *
+ *  -4: Das Schiff wurde bereits gesetzt.                               *
+ *  -5: Das Schiff geht über den Spielfeldrand hinaus.                  *
+ *  -6: Eines der vom Schiff zu besetzenden Felder ist schon besetzt.   *
+ *                                                                      *
+ ************************************************************************/
+int ship_set(unsigned short ship_id, unsigned short coordinate, char direction);
+
+
+unsigned short ship_start(unsigned short ship_id);
+int ship_state(unsigned short ship_id, unsigned short coordinate);
+int ship_change(unsigned short ship_id, unsigned short coordinate, int state);
+
 SHIP *ship_address(unsigned short ship_id);
