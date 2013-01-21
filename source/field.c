@@ -47,7 +47,9 @@ int field_state(int field, int element){
 	if((field1 == NULL) || (field2 == NULL)) return -3;
 
 	if(field == 1) return field1[element];
-	if(field == 2) return field2[element];	
+	if(field == 2) return field2[element];
+
+	return -4;
 }
 
 int field_set(int field, int element, int state){

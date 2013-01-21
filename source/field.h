@@ -17,8 +17,8 @@
  *     Verfügung.                                                       *
  *                                                                      *
  ************************************************************************/
-
 int field_init(int size);
+
 
 /************************************************************************
  *                                                                      *
@@ -30,8 +30,8 @@ int field_init(int size);
  * -1: Die Spielfelder können nicht gelöscht werden.                    *
  *                                                                      *
  ************************************************************************/
-
 int field_delete();
+
 
 /************************************************************************
  *                                                                      *
@@ -39,8 +39,8 @@ int field_delete();
  * feldes zurück.                                                       *
  *                                                                      *
  ************************************************************************/
-
 int field_counter();
+
 
 /************************************************************************
  *                                                                      *
@@ -52,10 +52,14 @@ int field_counter();
  * -1: Es wurde ein Feld ausgewählt, das nicht existiert.               *
  * -2: Es wurde ein Element ausgewählt, das nicht existiert.            *
  * -3: Eines oder beides Spielfelder existieren nicht.                  *
- * Status des gewünschten Feldes.                                       *
+ *                                                                      *
+ * Weitere Rückgabewerte: Status des gewünschten Feldes                 *
+ *    0: Wasser.					                                    *
+ *    1: Niete (geschossen, aber nicht getroffen.                       *
+ *    ansonsten: ship_id                                                *
  ************************************************************************/
-
 int field_state(int field, int element);
+
 
 /************************************************************************
  *                                                                      *
@@ -70,5 +74,6 @@ int field_state(int field, int element);
  * -3: Eines oder beides Spielfelder existieren nicht.                  *
  * -4: Der Status des gewünschten Feldes ist nicht positiv.             *
  ************************************************************************/
-
 int field_set(int field, int element, int state);
+
+

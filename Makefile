@@ -1,7 +1,7 @@
 CCWARNINGS=-Wall -Wextra
 CCOPTIMIZATION=
 CCOTHER=-std=gnu99
-LIBS=
+LIBS=-lm
 PATHS=
 
 EXECUTABLE=battleships

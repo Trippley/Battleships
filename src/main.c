@@ -9,7 +9,10 @@
 
 void gl_init(void) {
 		load_opengl_functions();
-		check_opengl_extensions_system_compability();
+		check_opengl_extensions();
+		
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE);
 		
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LEQUAL);
@@ -21,10 +24,10 @@ void gl_init(void) {
 
 int main(int argc, char** argv) { // I don't know for what yet...
 		
-		printf("- Battleships is initializing:\n
+		printf("- Battleships is initializing:\n");
 		
 		if(SDL_Init(SDL_INIT_VIDEO) < 0) {
-			printf("During SDL_Init ocurred an Error: %s, SDL_GetError());
+			printf("During SDL_Init an Error occured: %s", SDL_GetError());
 			return -1;
 		}
 		
@@ -48,14 +51,17 @@ int main(int argc, char** argv) { // I don't know for what yet...
 		
 		atexit(battleships_shutdown);
 		
-		printf("-Loading Menu...");
+		printf("- Loading Menu...\n");
 		
-		//create main menu
+		MenuContent menu;
 		
-		printf("-- Loading complete");
+		create_mainmenu(&menu);
 		
-		//entermenuloop
+		printf("-- Loading complete\n");
 		
+		loop_mainmenu(&menu);
+		
+		return 0;		
 }
 		
 		
@@ -63,14 +69,14 @@ void battleships_shutdown(void) {
 		printf("\n\nBattleships is shutting down:\n\n);
 		
 		save_config(FILE_CONFIG);
-		printf("Configfile saved.");
+		printf("Configfile saved.\n");
 		
 		free_resources();
 		gfx_shutdown();
 		
 		SDL_Quit();
 		
-		printf(" Have a good time. Bye.\n");
+		printf("Have a good time. Bye.\n");
 		
 }
 		
