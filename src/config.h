@@ -8,7 +8,7 @@ typedef struct Configuration {
 	char* 	strval[64];
 } Configuration;
 
-extern Configuration tconfig;
+extern Configuration configdata;
 
 typedef enum ConfigKey {
 	KEY_UP = 0,
