@@ -40,39 +40,39 @@ ConfigEntry* config_findentry_byid(int id) {
 }
 
 void config_preset(void) {
-	memset(tconfig.strval, 0, sizeof(tconfig.strval));
-	memset(tconfig.intval, 0, sizeof(tconfig.intval));
+	memset(configdata.strval, 0, sizeof(configdata.strval));
+	memset(configdata.intval, 0, sizeof(configdata.intval));
 
-	tconfig.intval[KEY_UP] = SDLK_UP;
-	tconfig.intval[KEY_DOWN] = SDLK_DOWN;
-	tconfig.intval[KEY_LEFT] = SDLK_LEFT;
-	tconfig.intval[KEY_RIGHT] = SDLK_RIGHT;
+	configdata.intval[KEY_UP] = SDLK_UP;
+	configdata.intval[KEY_DOWN] = SDLK_DOWN;
+	configdata.intval[KEY_LEFT] = SDLK_LEFT;
+	configdata.intval[KEY_RIGHT] = SDLK_RIGHT;
 
-	tconfig.intval[KEY_SHOT] = SDLK_RETURN;
+	configdata.intval[KEY_SHOT] = SDLK_RETURN;
 
-	tconfig.intval[KEY_FULLSCREEN] = SDLK_F11;
-	tconfig.intval[KEY_MENU] = SDLK_ESCAPE;
+	configdata.intval[KEY_FULLSCREEN] = SDLK_F11;
+	configdata.intval[KEY_MENU] = SDLK_ESCAPE;
 
-	tconfig.intval[FULLSCREEN] = 0;
+	configdata.intval[FULLSCREEN] = 0;
 
-	//tconfig.intval[NO_SHADER] = 0;
-	//tconfig.intval[NO_AUDIO] = 0; (for future relevance)
+	//configdata.intval[NO_SHADER] = 0;
+	//configdata.intval[NO_AUDIO] = 0; (for future relevance)
 
-	tconfig.intval[GFX_WIDTH] = RESOLUTIONX;
-	tconfig.intval[GFX_HEIGHT] = RESOLUTIONY;
+	configdata.intval[GFX_WIDTH] = RESOLUTIONX;
+	configdata.intval[GFX_HEIGHT] = RESOLUTIONY;
 	
-	tconfig.intval[FIELDW] = 13;
-	tconfig.intval[FIELDH] = 13;
+	configdata.intval[FIELDW] = 13;
+	configdata.intval[FIELDH] = 13;
 
 	char *name = "Player";
-	tconfig.strval[PLAYERNAME] = malloc(strlen(name)+1);
-	strcpy(tconfig.strval[PLAYERNAME], name);
+	configdata.strval[PLAYERNAME] = malloc(strlen(name)+1);
+	strcpy(configdata.strval[PLAYERNAME], name);
 }
 
 int config_sym2key(int sym) {
 	int i;
 	for(i = CONFIG_KEY_FIRST; i <= CONFIG_KEY_LAST; ++i)
-		if(sym == tconfig.intval[i])
+		if(sym == configdata.intval[i])
 			return i;
 	return -1;
 }
@@ -98,11 +98,11 @@ FILE* open_config(char *filename, char *mode) {
 }
 
 int config_intval_p(ConfigEntry *e) {
-	return tconfig.intval[e->key];
+	return configdata.intval[e->key];
 }
 
 char* config_strval_p(ConfigEntry *e) {
-	return tconfig.strval[e->key];
+	return configdata.strval[e->key];
 }
 
 int config_intval(char *key) {
@@ -152,15 +152,15 @@ void set_config(char *key, char *val) {
 
 	switch(e->type) {
 		case CFGT_INT:
-			tconfig.intval[e->key] = INTOF(val);
+			configdata.intval[e->key] = INTOF(val);
 			break;
 
 		case CFGT_KEYBINDING:
-			tconfig.intval[e->key] = INTOF(val+1);
+			configdata.intval[e->key] = INTOF(val+1);
 			break;
 
 		case CFGT_STRING:
-			stralloc(&(tconfig.strval[e->key]), val);
+			stralloc(&(configdata.strval[e->key]), val);
 			break;
 	}
 }
