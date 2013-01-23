@@ -1,3 +1,5 @@
+#define MIN_SHIP_ID 10
+
 typedef struct _ship_coordinates{
 	unsigned short coordinate;
 	int state;
@@ -77,5 +79,6 @@ int ship_set(unsigned short ship_id, unsigned short coordinate, char direction);
 unsigned short ship_start(unsigned short ship_id);
 int ship_state(unsigned short ship_id, unsigned short coordinate);
 int ship_change(unsigned short ship_id, unsigned short coordinate, int state);
+int ship_sunk(unsigned short ship_id);
 
 SHIP *ship_address(unsigned short ship_id);

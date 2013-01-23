@@ -1,6 +1,19 @@
 #define FIELD_MAX 100
 #define FIELD_MIN 13
 
+int *natalie;	// third global array for Natalie
+
+/************************************************************************
+ *                                                                      *
+ * Selber Übergabeparameter und selbe Rückgabewerte wie bei             *
+ * field_init(). Mit den Funktionen aus field.c und ship.c kann man     *
+ * NICHT auf dieses Array zugreifen. Dies wurde als globales Array      *
+ * deklariert und wird vom Programmierer direkt angesprochen.           *
+ *                                                                      *
+ ************************************************************************/
+int natalie_init(int size);
+
+
 /************************************************************************
  *                                                                      *
  * Die Funktion field_init erzeugt 2 Spielfelder. Die Spielfelder sind  *

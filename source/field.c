@@ -3,8 +3,26 @@
 
 int *field1 = NULL;
 int *field2 = NULL;
+int *natalie = NULL;	// third global array for Natalie
 
 int counter = 0;
+
+int natalie_init(int size){
+	int i;
+
+	if((size < FIELD_MIN) || (size > FIELD_MAX)) return -1;
+	if(natalie != NULL) return -2;
+
+	natalie = malloc(sizeof(int)*size*size);
+
+	if(natalie == NULL) return -3;
+
+	counter = size*size;
+
+	for(i=0; i<counter; i++) natalie[i] = 0;
+
+	return 0;
+}
 
 int field_init(int size){
 	int i;

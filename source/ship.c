@@ -4,7 +4,7 @@
 #include <math.h>
 
 SHIP *ship_list = NULL;
-unsigned short ship_id = 10;					// Werte zwischen 0 und 9 sind für den Status reserviert
+unsigned short ship_id = MIN_SHIP_ID;					// Werte zwischen 0 und 9 sind für den Status reserviert
 
 int ship_init(){
 	unsigned int fours = 0, threes = 0, twos = 0, ones = 0;
@@ -187,7 +187,7 @@ int ship_change(unsigned short ship_id, unsigned short coordinate, int state){
 
 	if(tmp_ship == NULL) return -1;		// Schiff existiert nicht
 	if(tmp_ship->active == 0) return -2;		// Schiff wurde noch nicht gesetzt
-	if((state != 3) && (state != 4)) return -3;		// ungültiger Status
+	if((state != 2) && (state != 3)) return -3;		// ungültiger Status
 	
 	tmp_coordinate = tmp_ship->coordinates;
 
@@ -201,3 +201,31 @@ int ship_change(unsigned short ship_id, unsigned short coordinate, int state){
 	return -4;		// Koordinate gab es nicht
 }
 
+int ship_sunk(unsigned short ship_id) {
+	SHIP *tmp_ship = NULL;
+	SHIP_COORDINATES *tmp_coordinate = NULL;
+	int i=0;
+
+	tmp_ship = ship_address(ship_id);
+
+	if(tmp_ship == NULL) return -1;					// Schiff existiert nicht
+	if(tmp_ship->active == 0) return -2;			// Schiff wurde noch nicht gesetzt
+	
+	tmp_coordinate = tmp_ship->coordinates;
+
+	while(tmp_coordinate != NULL) {
+		if(tmp_coordinate->state == 2) i++;
+		tmp_coordinate = tmp_coordinate->next;
+	}
+
+	if(tmp_ship->elements == i) {					// Alle Elemente wurden getroffen
+		tmp_coordinate = tmp_ship->coordinates;
+		for(i=0; i<tmp_ship->elements; i++) {
+			tmp_coordinate->state = 3;
+			tmp_coordinate = tmp_coordinate->next;
+		}
+		return 0;									// Status des Schiffes auf versenkt geändert
+	}
+
+	return -3;										// Status wurde nicht geändert
+}
