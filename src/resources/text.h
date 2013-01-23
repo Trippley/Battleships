@@ -1,3 +1,14 @@
+/*########################
+###
+###		This Programm
+###		falls under the
+###		MIT Software
+###		license. Check
+###		COPYING for 
+###		further
+###		information.
+###
+########################*/
 
 #ifndef TEXT_H
 #define TEXT_H

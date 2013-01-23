@@ -1,3 +1,15 @@
+/*########################
+###
+###		This Programm
+###		falls under the
+###		MIT Software
+###		license. Check
+###		COPYING for 
+###		further
+###		information.
+###
+########################*/
+
 #ifndef OPENGLFUNCTIONS_H
 #define OPENGLFUNCTIONS_H
 

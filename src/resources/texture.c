@@ -1,3 +1,15 @@
+/*########################
+###
+###		This Programm
+###		falls under the
+###		MIT Software
+###		license. Check
+###		COPYING for 
+###		further
+###		information.
+###
+########################*/
+
 #include <png.h>
 
 #include "texture.h"
@@ -71,7 +83,7 @@ Texture *load_texture(const char *filename) {
 		errx(-1,"load_texture():\n!- cannot load '%s'", filename);
 
 	Texture *texture = create_element((void **)&resources.textures, sizeof(Texture));
-	load_sdl_surf(surface, texture);	
+	load_sdl_surface(surface, texture);	
 	free(surface->pixels);
 	SDL_FreeSurface(surface);
 
@@ -88,27 +100,33 @@ Texture *load_texture(const char *filename) {
 }
 
 SDL_Surface *load_png(const char *filename) {
-	FILE *fp = fopen(filename, "rb");
-	if(!fp)
-		errx(-1, "Error loading '%s'", filename);
+	FILE *framepuffer = fopen(filename, "rb");
+	if(!framepuffer ) {
+		printf("Error loading '%s'", filename);
+		return -1;
+	}
 
 	png_structp png_ptr;
-	if(!(png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL)))
-		errx(-1,"Error loading '%s'", filename);
+	if(!(png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL))) {
+		printf("Error loading '%s'", filename);
+		return -1;
+	}
 
 	png_infop info_ptr;
 	if(!(info_ptr = png_create_info_struct(png_ptr))) {
 		png_destroy_read_struct(&png_ptr, NULL, NULL);
-		errx(-1,"Error loading '%s'", filename);
+		printf("Error loading '%s'", filename);
+		return -1;
 	}
 
 	png_infop end_info;
 	if(!(end_info = png_create_info_struct(png_ptr))) {
 		png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
-		errx(-1,"Error loading '%s'", filename);
+		printf("Error loading '%s'", filename);
+		return -1;
 	}
 
-	png_init_io(png_ptr, fp);
+	png_init_io(png_ptr, framepuffer);
 
 	png_read_png(png_ptr, info_ptr, 0, NULL);
 
@@ -121,35 +139,38 @@ SDL_Surface *load_png(const char *filename) {
 	Uint32 *pixels = malloc(sizeof(Uint32)*width*height);
 
 	int i;
-	for(i = 0; i < height; i++)
+	for(i = 0; i < height; i++) {
 		memcpy(&pixels[i*width], row_pointers[i], sizeof(Uint32)*width);
+	}
 
-	Uint32 rmask, gmask, bmask, amask;
+	Uint32 redmask, greenmask, bluemask, alphamask;
 
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    rmask = 0xff000000;
-    gmask = 0x00ff0000;
-    bmask = 0x0000ff00;
-    amask = 0x000000ff;
+    redmask = 0xff000000;
+    greenmask = 0x00ff0000;
+    bluemask = 0x0000ff00;
+    alphamask = 0x000000ff;
 #else
-    rmask = 0x000000ff;
-    gmask = 0x0000ff00;
-    bmask = 0x00ff0000;
-    amask = 0xff000000;
+	alphamask = 0xff000000;
+    bluemask = 0x00ff0000;
+    greenmask = 0x0000ff00;
+    redmask = 0x000000ff;
 #endif
 
-	SDL_Surface *res = SDL_CreateRGBSurfaceFrom(pixels, width, height, depth*4, 0, rmask, gmask, bmask, amask);
-	if(!res)
-		errx(-1,"Error loading '%s'", filename);
+	SDL_Surface *res = SDL_CreateRGBSurfaceFrom(pixels, width, height, depth*4, 0, redmask, greenmask, bluemask, alphamask);
+	if(!res) {
+		printf("Error loading '%s'", filename);
+		return -1;
+	}
 
-	fclose(fp);
+	fclose(framepuffer);
 
 	png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
 
 	return res;
 }
 
-void load_sdl_surf(SDL_Surface *surface, Texture *texture) {
+void load_sdl_surface(SDL_Surface *surface, Texture *texture) {
 	glGenTextures(1, &texture->gltex);
 	glBindTexture(GL_TEXTURE_2D, texture->gltex);
 
